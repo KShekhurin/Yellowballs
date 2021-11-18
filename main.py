@@ -3,14 +3,17 @@ import sys
 
 from PyQt5 import uic
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.uic.properties import QtCore
+
+from Ui import Ui_MainWindow
 
 
 class Controller:
     def __init__(self):
         self.app = QApplication(sys.argv)
         self.view = View(self)
-        self.ball = (0, 0, 0)
+        self.ball = (0, 0, 0, (0, 0, 0))
 
     def run(self):
         self.view.show()
@@ -24,7 +27,7 @@ class Controller:
             randint(0, abs(self.view.height() - length))
         )
 
-        self.ball = (posx, posy, length)
+        self.ball = (posx, posy, length, (randint(0, 255), randint(0, 255), randint(0, 255)))
         self.view.repaint()
 
 
@@ -32,7 +35,6 @@ class View(QMainWindow):
     def __init__(self, controller: Controller):
         super(QMainWindow, self).__init__()
         uic.loadUi("Ui.ui", self)
-
         self.controller = controller
         self.init_bindings()
 
@@ -46,8 +48,8 @@ class View(QMainWindow):
         qp.end()
 
     def draw_balls(self, event, qp):
-        posx, posy, length = self.controller.ball
-        qp.setBrush(QColor(255, 0, 0))
+        posx, posy, length, rgb = self.controller.ball
+        qp.setBrush(QColor(*rgb))
         qp.drawEllipse(posx, posy, length, length)
 
 
