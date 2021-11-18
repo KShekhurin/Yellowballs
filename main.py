@@ -47,7 +47,7 @@ class View(QMainWindow):
 
     def draw_balls(self, event, qp):
         posx, posy, length = self.controller.ball
-        qp.setBrush(QsColor(255, 0, 0))
+        qp.setBrush(QColor(255, 0, 0))
         qp.drawEllipse(posx, posy, length, length)
 
 
